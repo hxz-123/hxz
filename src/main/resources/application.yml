@@ -1,17 +1,43 @@
+#custom:
+#  http-port: 8082
 server:
-  port: 80
-
-
+  port: 8081
+#  ssl: #ssl配置
+#    enabled: true  # 默认为true
+#    #key-alias: alias-key # 别名(可以不进行配置)
+#    # 保存SSL证书的秘钥库的路径
+#    key-store: classpath:ssl/hkjt123.com.jks
+#    #key-password: 私钥密码
+#    key-store-password: hor48bik
+#    key-store-type: JKS
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${MYSQL_ADDRESS}/${MYSQL_DATABASE:springboot_demo}
-    username: ${MYSQL_USERNAME}
-    password: ${MySQL_PASSWORD}
-  mvc:
-    view:
-      suffix: .html
-      prefix: /
-
+    url: jdbc:mysql:///test?useUnicode=true&useSSL=false&characterEncoding=utf8
+    username: root
+    password: 123456
+  main:
+    allow-bean-definition-overriding: true
 mybatis:
-  mapper-locations: classpath*:mapper/*Mapper.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+  type-aliases-package: com.abc.bean
+  mapper-locations: classpath:mapper/*.xml
+
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+
+logging:
+  pattern:
+    console: level-%level %msg%n
+  level:
+    root: info
+    org.hibernate: info
+    com.abc: debug
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
+    org.hibernate.type.descriptor.sql.BasicExtractor: trace
+
